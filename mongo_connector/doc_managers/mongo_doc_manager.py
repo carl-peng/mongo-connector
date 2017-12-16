@@ -144,10 +144,14 @@ class DocManager(DocManagerBase):
                     "renameCollection", a, to=b)
 
         if doc.get('create'):
-            new_db, coll = self.command_helper.map_collection(
-                db, doc['create'])
-            if new_db:
-                self.mongo[new_db].create_collection(coll)
+            try:
+                new_db, coll = self.command_helper.map_collection(
+                    db, doc['create'])
+                if new_db:
+                    self.mongo[new_db].create_collection(coll)
+            except:
+                LOG.warn("Unknown create collection failed")
+                pass
 
         if doc.get('drop'):
             new_db, coll = self.command_helper.map_collection(
