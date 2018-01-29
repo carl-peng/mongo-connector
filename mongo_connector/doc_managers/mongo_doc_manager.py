@@ -178,6 +178,11 @@ class DocManager(DocManagerBase):
 
         if( "$set" not in update_spec and "$unset" not in update_spec ):
             update_spec = {"$set": update_spec} # python requires a dollar sign operator
+
+        # Version 3.6 of mongodb includes a $v, see https://jira.mongodb.org/browse/SERVER-32240
+        if '$v' in update_spec:
+            update_spec.pop('$v')
+
         updated = self.mongo[db][coll].update_one({'_id': document_id}, update_spec )
 
         return updated

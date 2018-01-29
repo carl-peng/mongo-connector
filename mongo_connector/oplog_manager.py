@@ -436,6 +436,11 @@ class OplogThread(threading.Thread):
         fields = include_fields or exclude_fields
         entry_o = entry['o']
         # 'i' indicates an insert. 'o' field is the doc to be inserted.
+
+        # Version 3.6 of mongodb includes a $v, see https://jira.mongodb.org/browse/SERVER-32240
+        if '$v' in entry_o:
+            entry_o.pop('$v')
+
         if entry['op'] == 'i':
             entry['o'] = filter_fields(entry_o, fields)
         # 'u' indicates an update. The 'o' field describes an update spec

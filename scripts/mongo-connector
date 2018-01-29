@@ -32,7 +32,9 @@ pidfile=/var/run/mongo-connector.pid
 config=/etc/mongo-connector.json
 error=/var/log/mongo-connector/mongo-connector.err
 
-mc="/usr/bin/python -m mongo_connector.connector \
+# /usr/bin/python
+# change to portable pypy to enhance performance
+mc="/usr/local/bin/pypy -m mongo_connector.connector \
     -c $config >/dev/null 2> $error & \
     echo "'$!'" > $pidfile"
 
